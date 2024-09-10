@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sepsis Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            padding-left: 10px;
+            padding-right:10px;
+            font-size: 40px;
+            text-align: center;
+            color: white;
+            background-color: red;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table th {
+            font-weight: bold;
+            text-align: left;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+        }
+        table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .innerText{
+            background-color : yellow;
+            color : red;
+        }
+        #prediction-result {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+        #footer {
+            margin-top: 20px;
+            font-size: 18px;
+            font-style: italic;
+            text-align: center;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sepsis Prediction</h1>
+    <form id="sepsis-form">
+        <table>
+            <tr>
+                <th colspan="2">Patient Data</th>
+            </tr>
+            <tr>
+                <td><input type="text" id="hr" name="hr" placeholder="Heart Rate"></td>
+                <td><input type="text" id="o2sat" name="o2sat" placeholder="Oxygen Saturation"></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="temp" name="temp" placeholder="Temperature"></td>
+                <td><input type="text" id="sbp" name="sbp" placeholder="Systolic Blood Pressure"></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="map" name="map" placeholder="Mean Arterial Pressure"></td>
+                <td><input type="text" id="dbp" name="dbp" placeholder="Diastolic Blood Pressure"></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="resp" name="resp" placeholder="Respiration Rate"></td>
+                <td><input type="text" id="fio2" name="fio2" placeholder="Fraction of Inspired Oxygen"></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="ph" name="ph" placeholder="pH"></td>
+                <td><input type="text" id="baseexcess" name="baseexcess" placeholder="BaseExcess"></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="hco3" name="hco3" placeholder="HCO3"></td>
+                <td><input type="text" id="paco2" name="paco2" placeholder="PaCO2"></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="bun" name="bun" placeholder="BUN"></td>
+                <td><input type="text" id="chloride" name="chloride" placeholder="Chloride"></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="glucose" name="glucose" placeholder="Glucose"></td>
+                <td><input type="text" id="potassium" name="potassium" placeholder="Potassium"></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="hct" name="hct" placeholder="Hct"></td>
+                <td><input type="text" id="hgb" name="hgb" placeholder="Hgb"></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="age" name="age" placeholder="Age"></td>
+                <td><input type="text" id="gender" name="gender" placeholder="Gender"></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="unit1" name="unit1" placeholder="Unit1"></td>
+                <td><input type="text" id="unit2" name="unit2" placeholder="Unit2"></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="hospadmtime" name="hospadmtime" placeholder="HospAdmTime"></td>
+                <td><input type="text" id="iculos" name="iculos" placeholder="ICULOS"></td>
+            </tr>
+        </table>
+        <button type="submit">Predict</button>
+    </form>
+    <div id="prediction-result"></div>
+    <h2 id="footer">@GroupID-1866</h2>
+
+    <script>
+        document.getElementById('sepsis-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Collecting form data
+            var hr = document.getElementById('hr').value;
+            var o2sat = document.getElementById('o2sat').value;
+            var temp = document.getElementById('temp').value;
+            var sbp = document.getElementById('sbp').value;
+            var map = document.getElementById('map').value;
+            var dbp = document.getElementById('dbp').value;
+            var resp = document.getElementById('resp').value;
+            var fio2 = document.getElementById('fio2').value;
+            var ph = document.getElementById('ph').value;
+            var baseexcess = document.getElementById('baseexcess').value;
+            var hco3 = document.getElementById('hco3').value;
+            var paco2 = document.getElementById('paco2').value;
+            var bun = document.getElementById('bun').value;
+            var chloride = document.getElementById('chloride').value;
+            var glucose = document.getElementById('glucose').value;
+            var potassium = document.getElementById('potassium').value;
+            var hct = document.getElementById('hct').value;
+            var hgb = document.getElementById('hgb').value;
+            var age = document.getElementById('age').value;
+            var gender = document.getElementById('gender').value;
+            var unit1 = document.getElementById('unit1').value;
+            var unit2 = document.getElementById('unit2').value;
+            var hospadmtime = document.getElementById('hospadmtime').value;
+            var iculos = document.getElementById('iculos').value;
+
+            // Creating data object
+            var data = {
+                'features': [hr, o2sat, temp, sbp, map, dbp, resp, fio2, ph, baseexcess, hco3, paco2, bun, chloride, glucose, potassium, hct, hgb, age, gender, unit1, unit2, hospadmtime, iculos].map(Number)
+            };
+
+            // Sending data to the server for prediction
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Displaying the prediction result
+                document.getElementById('prediction-result').innerText = 'Sepsis: ' + data.prediction;
+            });
+        });
+    </script>
+</body>
+</html>

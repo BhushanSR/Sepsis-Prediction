@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sepsis Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #prediction-result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sepsis Prediction</h1>
+    <form id="sepsis-form">
+        <label for="hr">HR (Heart Rate):</label>
+        <input type="text" id="hr" name="hr" placeholder="Heart Rate">
+        <br>
+        <label for="o2sat">O2Sat (Oxygen Saturation):</label>
+        <input type="text" id="o2sat" name="o2sat" placeholder="Oxygen Saturation">
+        <br>
+        <label for="temp">Temp (Temperature):</label>
+        <input type="text" id="temp" name="temp" placeholder="Temperature">
+        <br>
+        <label for="sbp">SBP (Systolic Blood Pressure):</label>
+        <input type="text" id="sbp" name="sbp" placeholder="Systolic Blood Pressure">
+        <br>
+        <label for="map">MAP (Mean Arterial Pressure):</label>
+        <input type="text" id="map" name="map" placeholder="Mean Arterial Pressure">
+        <br>
+        <label for="dbp">DBP (Diastolic Blood Pressure):</label>
+        <input type="text" id="dbp" name="dbp" placeholder="Diastolic Blood Pressure">
+        <br>
+        <label for="resp">Resp (Respiration Rate):</label>
+        <input type="text" id="resp" name="resp" placeholder="Respiration Rate">
+        <br>
+        <label for="fio2">FiO2 (Fraction of Inspired Oxygen):</label>
+        <input type="text" id="fio2" name="fio2" placeholder="Fraction of Inspired Oxygen">
+        <br>
+        <label for="ph">pH:</label>
+        <input type="text" id="ph" name="ph" placeholder="pH">
+        <br>
+        <label for="baseexcess">BaseExcess:</label>
+        <input type="text" id="baseexcess" name="baseexcess" placeholder="BaseExcess">
+        <br>
+        <label for="hco3">HCO3:</label>
+        <input type="text" id="hco3" name="hco3" placeholder="HCO3">
+        <br>
+        <label for="paco2">PaCO2:</label>
+        <input type="text" id="paco2" name="paco2" placeholder="PaCO2">
+        <br>
+        <label for="bun">BUN:</label>
+        <input type="text" id="bun" name="bun" placeholder="BUN">
+        <br>
+        <label for="chloride">Chloride:</label>
+        <input type="text" id="chloride" name="chloride" placeholder="Chloride">
+        <br>
+        <label for="glucose">Glucose:</label>
+        <input type="text" id="glucose" name="glucose" placeholder="Glucose">
+        <br>
+        <label for="potassium">Potassium:</label>
+        <input type="text" id="potassium" name="potassium" placeholder="Potassium">
+        <br>
+        <label for="hct">Hct:</label>
+        <input type="text" id="hct" name="hct" placeholder="Hct">
+        <br>
+        <label for="hgb">Hgb:</label>
+        <input type="text" id="hgb" name="hgb" placeholder="Hgb">
+        <br>
+        <label for="age">Age:</label>
+        <input type="text" id="age" name="age" placeholder="Age">
+        <br>
+        <label for="gender">Gender:</label>
+        <input type="text" id="gender" name="gender" placeholder="Gender">
+        <br>
+        <label for="unit1">Unit1:</label>
+        <input type="text" id="unit1" name="unit1" placeholder="Unit1">
+        <br>
+        <label for="unit2">Unit2:</label>
+        <input type="text" id="unit2" name="unit2" placeholder="Unit2">
+        <br>
+        <label for="hospadmtime">HospAdmTime:</label>
+        <input type="text" id="hospadmtime" name="hospadmtime" placeholder="HospAdmTime">
+        <br>
+        <label for="iculos">ICULOS:</label>
+        <input type="text" id="iculos" name="iculos" placeholder="ICULOS">
+        <br>
+        <button type="submit">Predict</button>
+    </form>
+    <div id="prediction-result"></div>
+
+    <script>
+        document.getElementById('sepsis-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var hr = document.getElementById('hr').value;
+            var o2sat = document.getElementById('o2sat').value;
+            var temp = document.getElementById('temp').value;
+            var sbp = document.getElementById('sbp').value;
+            var map = document.getElementById('map').value;
+            var dbp = document.getElementById('dbp').value;
+            var resp = document.getElementById('resp').value;
+            var fio2 = document.getElementById('fio2').value;
+            var ph = document.getElementById('ph').value;
+            var baseexcess = document.getElementById('baseexcess').value;
+            var hco3 = document.getElementById('hco3').value;
+            var paco2 = document.getElementById('paco2').value;
+            var bun = document.getElementById('bun').value;
+            var chloride = document.getElementById('chloride').value;
+            var glucose = document.getElementById('glucose').value;
+            var potassium = document.getElementById('potassium').value;
+            var hct = document.getElementById('hct').value;
+            var hgb = document.getElementById('hgb').value;
+            var age = document.getElementById('age').value;
+            var gender = document.getElementById('gender').value;
+            var unit1 = document.getElementById('unit1').value;
+            var unit2 = document.getElementById('unit2').value;
+            var hospadmtime = document.getElementById('hospadmtime').value;
+            var iculos = document.getElementById('iculos').value;
+
+            var data = {
+                'features': [hr, o2sat, temp, sbp, map, dbp, resp, fio2, ph, baseexcess, hco3, paco2, bun, chloride, glucose, potassium, hct, hgb, age, gender, unit1, unit2, hospadmtime, iculos].map(Number)
+            };
+
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('prediction-result').innerText = 'Prediction: ' + data.prediction;
+            });
+        });
+    </script>
+</body>
+</html>
